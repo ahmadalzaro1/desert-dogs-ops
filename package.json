@@ -19,6 +19,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@types/node": "^22.20.1",
     "eslint": "^9.37.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
