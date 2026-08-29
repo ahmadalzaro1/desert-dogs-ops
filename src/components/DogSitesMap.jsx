@@ -16,6 +16,7 @@ function DogSitesMapInner() {
     const { L } = useI18n();
     const containerRef = useRef(null);
     const viewerRef = useRef(null);
+    const cesiumRef = useRef(null);
     const setInspector = useStore((s) => s.setInspector);
     const setMapReady = useStore((s) => s.setMapReady);
     const setMapFailed = useStore((s) => s.setMapFailed);
@@ -26,6 +27,7 @@ function DogSitesMapInner() {
         const init = async () => {
             try {
                 const Cesium = (await import('cesium')).default;
+                cesiumRef.current = Cesium;
                 if (disposed || !containerRef.current) return;
 
                 // ── keyless Esri World Imagery (verbatim from Godseye) ──
@@ -104,10 +106,11 @@ function DogSitesMapInner() {
     }, [L, setInspector, setMapReady, setMapFailed]);
 
     // Re-frame when the user asks for a reset (nav "Map" focus, etc.).
+    // Uses the Cesium instance captured during init — the app loads Cesium via
+    // dynamic import, so it is never on `window`.
     useEffect(() => {
-        if (!viewerRef.current || resetViewNonce === 0) return;
-        const Cesium = window.Cesium;
-        if (!Cesium) return;
+        if (!viewerRef.current || !cesiumRef.current || resetViewNonce === 0) return;
+        const Cesium = cesiumRef.current;
         viewerRef.current.camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(FIELD_VIEW.lon, FIELD_VIEW.lat, FIELD_VIEW.height),
         });

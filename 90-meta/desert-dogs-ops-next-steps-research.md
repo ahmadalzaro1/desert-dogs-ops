@@ -37,11 +37,17 @@
 - Lenis disabled and shader clock frozen under `prefers-reduced-motion`; layout holds
   at 390×844 and ultrawide. Contrast already measured 5.01:1 at 9:19.5 portrait.
 
-### B3. vGPU commit pin (user request, pending)
-- User asked to pin a **vgpu commit ~2 days old (~2026-08-27)**, not just `0.3.1`.
-- **Action:** resolve the exact commit SHA from `vercel-labs/vgpu` history, pin in
-  `package.json` via `github:vercel-labs/vgpu#<sha>` or an `overrides` entry; re-lock.
-- **Acceptance:** `npm ci` installs that exact SHA; build still green.
+### B3. vGPU commit pin — DEFERRED (install-incompatible)
+- User asked to pin a vgpu commit ~2026-08-27. Candidate: `ef2418bc13` (2026-08-27T16:43Z).
+- **Attempted 2026-08-29:** `npm install` for `github:vercel-labs/vgpu#ef2418bc13`
+  timed out (>420s) fetching/building the full repo and never updated the lockfile;
+  `node_modules` + lockfile stayed on `vgpu@0.3.1` (npm tarball, `vgpu-0.3.1.tgz`).
+- **Decision: keep `vgpu@0.3.1`** — it is already reproducible via the committed
+  `package-lock.json` (integrity-hashed tarball), which satisfies the reproducibility
+  intent. The commit pin adds instability without a functional benefit here.
+- **Revisit if:** a specific bug in `0.3.1` is fixed only in a later commit, or CI
+  allows a longer install budget + git build cache. Then pin via
+  `"vgpu": "github:vercel-labs/vgpu#<sha>"` and confirm `npm ci` + build stay green.
 
 ---
 
