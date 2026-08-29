@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import useStore from '../src/store/useStore';
 
 /**
  * Exercises the store's async actions against the in-memory dataAdapter mock.
