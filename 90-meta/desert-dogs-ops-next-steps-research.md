@@ -9,18 +9,14 @@
 
 ## A. Ship it (blocking for public use)
 
-### A1. Public deployment — permanent URL
-- **Why:** current links are dev-server-only (`localhost:5173`, LAN `192.168.1.101:5173`),
-  unreachable from the internet.
-- **Path:** push repo to GitHub; deploy `dist/` to Vercel/Netlify/Cloudflare Pages
-  (all free, keyless, no backend needed). `vite build` already produces `dist/`.
-- **Acceptance:** `https://<slug>.pages.dev` (or equivalent) loads with globe + shader.
-- **Note:** vgpu is ESM/WebGPU — verify the deployed bundle doesn't tree-shake the
-  dynamic `import('vgpu')`. Add a `Cesium` base path if the host rewrites assets.
+### A1. Public deployment — DONE (2026-08-29)
+- **Repo:** https://github.com/ahmadalzaro1/desert-dogs-ops (public, Apache-2.0)
+- **Live URL:** https://ahmadalzaro1.github.io/desert-dogs-ops/ (HTTP 200, RTL Arabic, Cesium CSS present)
+- **Mechanism:** GitHub Pages via `.github/workflows/deploy.yml` (npm ci + `npm run ci` + build → Pages artifact). `vite.config.js` `base: '/desert-dogs-ops/'`.
+- **History hygiene:** removed godseye OSINT blobs (Godseye.png 5.3MB, manifests JSONs 3-4MB, Cesium_Air.glb) via `git filter-branch` + prune; remote tree verified clean.
+- **Note:** vgpu is ESM/WebGPU; the dynamic `import('vgpu')` survived the production build (bundle includes it). No Ion token.
 
-### A2. Temporary public tunnel (if A1 not yet done)
-- Cloudflare/ngrok tunnel over the running dev server for ad-hoc sharing.
-- **Caveat:** ephemeral; not a substitute for A1.
+### A2. Temporary public tunnel — N/A (A1 satisfied with permanent URL)
 
 ---
 
